@@ -1,5 +1,4 @@
-package com.mook.tomcat.second;
-
+package webroot;
 import java.io.IOException;
 import java.io.PrintWriter;
 

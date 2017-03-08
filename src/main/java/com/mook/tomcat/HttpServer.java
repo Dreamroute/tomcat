@@ -39,15 +39,27 @@ public class HttpServer {
                 
                 // create response object
                 Response response = new Response(out);
+                response.setRequest(request);
                 
                 // invoke
-                response.setRequest(request);
-                response.sendStaticResource();
+                String uri = request.getUri();
+                if(uri.startsWith("/servlet")) {
+                    ServletProcess servletProcess = new ServletProcess();
+                    servletProcess.process(request, response);
+                } else {
+                    StaticProcess staticProcess = new StaticProcess();
+                    staticProcess.process(request, response);
+                }
                 
                 socket.close();
                 
             } catch (IOException e) {
                 e.printStackTrace();
+                try {
+                    serverSocket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
     }
